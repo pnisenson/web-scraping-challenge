@@ -1,6 +1,7 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import time
+import pandas as pd
 
 
 def init_browser():
@@ -41,6 +42,15 @@ def scrape():
     scraped_data['MarsImage'] = featured_image_url
     browser.quit()
 
+    # Navigate to Mars Facts page
+    browser = init_browser()
+    url = 'https://space-facts.com/mars/'
+    browser.visit(url)
+    # Scrape the Mars facts table and convert to html
+    table = pd.read_html(url)[0].to_html(classes="table table-striped")
+    scraped_data['table'] = table
+    browser.quit()
+
     # Navigate to Mars astrology page and Soupify 
     browser = init_browser()
     url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars/"
@@ -48,31 +58,43 @@ def scrape():
 
     # Get the Hemisphere names and append to list
     hemispheres = soup.find_all('div', class_="item")
+    number = 1
     hemi_name = []
+    hemi_label= 'hemi_name' + str(number)
     for hemi in hemispheres:
         hemi_name.append(hemi.find('h3').text)
+        scraped_data[hemi_label] = hemi.find('h3').text
+        number +=1
+        hemi_label = 'hemi_name' + str(number)
 
     # Create loop to click each hemisphere link and grab the full image url
-    hemi_link = []
+    number = 1
+    hemi_link = 'hemi_link' + str(number)
     for hemi in hemi_name:
         #click the link of the image
         browser.find_by_text(hemi).click()
         #get image source
-        hemi_link.append(browser.links.find_by_text('Sample')['href'])
+        scraped_data[hemi_link] = browser.links.find_by_text('Sample')['href']
+        number +=1
+        hemi_link = 'hemi_link' + str(number)
         #return to previous page
         browser.visit(url)
 
 
-    # Store data in a dictionary
-    hemisphere_image_urls = []
-    for name in hemi_name:
-        for link in hemi_link:
-            scraped_data[name] = link
-            hemi_link.remove(link)
+    # # Store data in a dictionary
+    # number = 1
+    # hemi = 'hemi' + str(number)
+    # for name in hemi_name:
+    #     for link in hemi_link:
+    #         scraped_data[hemi] = {name:link}
+    #         hemi_link.remove(link)
+    #         number += 1
+    #         hemi = 'hemi' + str(number)
 
     # Close the browser after scraping
     browser.quit()
 
     # Return results
     return scraped_data
+
 
