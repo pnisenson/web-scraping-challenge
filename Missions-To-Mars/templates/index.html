@@ -18,11 +18,54 @@
 
     <h2>Latest Mars News</h2>
     <h3>{{ mars.news_title }}</h3>
-    <h3>{{ mars.news_para }}</h3>
+    <p>{{ mars.news_para }}</p>
+    <div class="row">
+      <div class="col-sm-8">
     <h2>Featured Mars Image</h2>
     <img src="{{ mars.MarsImage }}" alt="MarsImage">
+    </div>
+      <div class="col-sm-4">
     <h2>Mars Facts</h2>
     <div>{{mars.table|safe}}</div>
+    </div>
+    </div>
+    <div class="row">
+      <div class ="col-sm-6">
+        <div class="card" style="width: 180rem;">
+          <img width = 500px class="card-img-top" src="{{mars.hemi_link1}}" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text">{{mars.hemi_name1}}</p>
+            </div>
+          </div>
+        </div>
+      <div class ="col-sm-6">
+        <div class="card" style="width: 180rem;">
+          <img width = 500px class="card-img-top" src="{{ mars.hemi_link2 }}" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text">{{mars.hemi_name2}}</p>
+            </div>
+          </div>
+        </div>
+  </div>
+  <div class="row">
+      <div class ="col-sm-6">
+        <div class="card" style="width: 180rem;">
+          <img width = 500px class="card-img-top" src="{{mars.hemi_link3}}" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text">{{mars.hemi_name3}}</p>
+            </div>
+          </div>
+        </div>
+      <div class ="col-sm-6">
+        <div class="card" style="width: 180rem;">
+          <img width = 500px class="card-img-top" src="{{ mars.hemi_link4 }}" alt="Card image cap">
+            <div class="card-body">
+              <p class="card-text">{{mars.hemi_name4}}</p>
+            </div>
+          </div>
+        </div>
+  </div>
+</div>
 
     
 <!--     <img src="{{ mars.hemi_link1 }}" alt="HemiImage"> -->

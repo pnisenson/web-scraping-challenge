@@ -47,7 +47,10 @@ def scrape():
     url = 'https://space-facts.com/mars/'
     browser.visit(url)
     # Scrape the Mars facts table and convert to html
-    table = pd.read_html(url)[0].to_html(classes="table table-striped")
+    table = pd.read_html(url)[0]
+    table = table.rename(columns={0:"Description", 1:"Mars"})
+    table = table.set_index("Description", drop = True)
+    table = table.to_html(classes="table table-striped")
     scraped_data['table'] = table
     browser.quit()
 
@@ -79,17 +82,6 @@ def scrape():
         hemi_link = 'hemi_link' + str(number)
         #return to previous page
         browser.visit(url)
-
-
-    # # Store data in a dictionary
-    # number = 1
-    # hemi = 'hemi' + str(number)
-    # for name in hemi_name:
-    #     for link in hemi_link:
-    #         scraped_data[hemi] = {name:link}
-    #         hemi_link.remove(link)
-    #         number += 1
-    #         hemi = 'hemi' + str(number)
 
     # Close the browser after scraping
     browser.quit()
